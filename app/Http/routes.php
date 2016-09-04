@@ -21,4 +21,10 @@ $app->group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'api'], func
     $app->post('products', 'APIProductController@store');
     $app->put('products/{id}', 'APIProductController@update');
     $app->delete('products/{id}', 'APIProductController@delete');
+
+    $app->get('coupons', 'APICouponController@index');
+    $app->get('coupons/{id}', 'APICouponController@show');
+    $app->post('coupons', 'APICouponController@store');
+    $app->put('coupons/{id}', 'APICouponController@update');
+    $app->delete('coupons/{id}', 'APICouponController@delete');
 });

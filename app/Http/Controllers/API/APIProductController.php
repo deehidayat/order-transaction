@@ -6,7 +6,7 @@ use App\Factories\ProductFactory;
 
 class APIProductController extends AbstractController
 {
-    function __construct(ProductFactory $productFactory) {
-        $this->factory = $productFactory;
+    function __construct(ProductFactory $factory) {
+        $this->factory = $factory;
     }
 }
