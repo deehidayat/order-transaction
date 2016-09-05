@@ -27,4 +27,9 @@ $app->group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'api'], func
     $app->post('coupons', 'APICouponController@store');
     $app->put('coupons/{id}', 'APICouponController@update');
     $app->delete('coupons/{id}', 'APICouponController@delete');
+
+    $app->get('carts', 'APICartController@index');
+    $app->post('carts', 'APICartController@store');
+    $app->put('carts/{id}', 'APICartController@update');
+    $app->delete('carts/{id}', 'APICartController@delete');
 });
