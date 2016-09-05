@@ -28,4 +28,61 @@ class APIOrderController extends AbstractController
         ]);
     }
 
+    /**
+     * This method will restricted to admin
+     */
+    public function reject(Request $request, $invoiceNo) {
+        $data = $request->input();
+        $data['invoice_no'] = $invoiceNo;
+        try {
+            $record = $this->factory->reject($data);
+        } catch (\Exception $e) {
+            return $this->response([
+                'error' => json_decode($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage()
+            ]);    
+        }
+        return $this->response([
+            'data' => $record,
+            'success' => true
+        ]);
+    }
+
+    /**
+     * This method will restricted to admin
+     */
+    public function approve(Request $request, $invoiceNo) {
+        $data = $request->input();
+        $data['invoice_no'] = $invoiceNo;
+        try {
+            $record = $this->factory->approve($data);
+        } catch (\Exception $e) {
+            return $this->response([
+                'error' => json_decode($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage()
+            ]);    
+        }
+        return $this->response([
+            'data' => $record,
+            'success' => true
+        ]);
+    }
+
+    /**
+     * This method will restricted to admin
+     */
+    public function shipped(Request $request, $invoiceNo) {
+        $data = $request->input();
+        $data['invoice_no'] = $invoiceNo;
+        try {
+            $record = $this->factory->shipped($data);
+        } catch (\Exception $e) {
+            return $this->response([
+                'error' => json_decode($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage()
+            ]);    
+        }
+        return $this->response([
+            'data' => $record,
+            'success' => true
+        ]);
+    }
+
 }

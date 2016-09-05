@@ -203,4 +203,65 @@ class OrderFactory extends AbstractFactory
         }
     }
 
+    public function reject($data)
+    {
+        $result = app('validator')->make($data, [
+            'invoice_no' => 'required|exists:orders'
+        ]);
+        if (count($result->messages())) {
+            throw new \Exception($result->messages());
+        }
+        $order = $this->model->where('invoice_no', $data['invoice_no'])->first();
+        if (empty($order)) {
+            throw new \Exception('Order not found');
+        }
+        try {
+            $order->update(['status' => 'rejected']);
+            return $order;
+        } catch (Exception $e) {   
+            throw new \Exception('Failed to reject order');
+        }
+    }
+
+    public function approve($data)
+    {
+        $result = app('validator')->make($data, [
+            'invoice_no' => 'required|exists:orders'
+        ]);
+        if (count($result->messages())) {
+            throw new \Exception($result->messages());
+        }
+        $order = $this->model->where('invoice_no', $data['invoice_no'])->first();
+        if (empty($order)) {
+            throw new \Exception('Order not found');
+        }
+        try {
+            $order->update(['status' => 'ready_for_shipment']);
+            return $order;
+        } catch (Exception $e) {   
+            throw new \Exception('Failed to approve order');
+        }
+    }
+
+    public function shipped($data)
+    {
+        $result = app('validator')->make($data, [
+            'invoice_no' => 'required|exists:orders',
+            'shipping_no' => 'required|unique:orders'
+        ]);
+        if (count($result->messages())) {
+            throw new \Exception($result->messages());
+        }
+        $order = $this->model->where('invoice_no', $data['invoice_no'])->first();
+        if (empty($order)) {
+            throw new \Exception('Order not found');
+        }
+        try {
+            $order->update(['status' => 'shipped', 'shipping_no' => $data['shipping_no']]);
+            return $order;
+        } catch (Exception $e) {   
+            throw new \Exception('Failed to ship order');
+        }
+    }
+
 }
