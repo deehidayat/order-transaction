@@ -9,6 +9,8 @@ interface ICRUDFactory
 
     public function search(Request $request);
 
+    public function all();
+
     public function find($id);
 
     public function create(Request $data);

@@ -27,4 +27,17 @@ $app->group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'api'], func
     $app->post('coupons', 'APICouponController@store');
     $app->put('coupons/{id}', 'APICouponController@update');
     $app->delete('coupons/{id}', 'APICouponController@delete');
+
+    $app->get('carts', 'APICartController@index');
+    $app->post('carts', 'APICartController@store');
+    $app->put('carts/{id}', 'APICartController@update');
+    $app->delete('carts/{id}', 'APICartController@delete');
+    $app->post('carts/placeorder', 'APICartController@placeOrder');
+
+    $app->get('orders', 'APIOrderController@index');
+    $app->get('orders/{invoiceNo}', 'APIOrderController@show');
+    $app->post('orders/{invoiceNo}/payment', 'APIOrderController@payment');
+    $app->post('orders/{invoiceNo}/reject', 'APIOrderController@reject');
+    $app->post('orders/{invoiceNo}/approve', 'APIOrderController@approve');
+    $app->post('orders/{invoiceNo}/shipped', 'APIOrderController@shipped');
 });

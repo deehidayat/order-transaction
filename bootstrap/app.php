@@ -23,7 +23,9 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+$app->configure('filesystems');
+$app->withFacades();
+class_alias('Illuminate\Support\Facades\Storage', 'Storage');
 
 $app->withEloquent();
 
@@ -48,6 +50,13 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->singleton('filesystem', function ($app) {
+    return $app->loadComponent(
+        'filesystems',
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        'filesystem'
+    );
+});
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
