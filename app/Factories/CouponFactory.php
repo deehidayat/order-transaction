@@ -20,7 +20,7 @@ class CouponFactory extends AbstractFactory
         $result = app('validator')->make($data, [
             'code' => 'required|unique:coupons',
             'description' => 'required|unique:coupons',
-            'amount' => 'required',
+            'amount' => 'numeric|required',
             'amount_type' => 'required|in:percentage,money',
             'valid_from' => 'date|required',
             'valid_until' => 'date|required',
@@ -34,8 +34,8 @@ class CouponFactory extends AbstractFactory
     public function validateUpdateRequest(Array $data, $id) {
         $result = app('validator')->make($data, [
             'code' => "unique:coupons,code,{$id}",
-            'description' => 'unique:coupons',
-            'amount' => 'min:0',
+            'description' => "unique:coupons,description,{$id}",
+            'amount' => 'numeric|min:0',
             'amount_type' => 'in:percentage,money',
             'valid_from' => 'date',
             'valid_until' => 'date',

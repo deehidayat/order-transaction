@@ -35,7 +35,7 @@ $app->group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'api'], func
     $app->post('carts/placeorder', 'APICartController@placeOrder');
 
     $app->get('orders', 'APIOrderController@index');
-    $app->get('orders/{invoiceNo}', 'APIOrderController@show');
+    $app->get('orders/{id}', 'APIOrderController@show');
     $app->post('orders/{invoiceNo}/payment', 'APIOrderController@payment');
     $app->post('orders/{invoiceNo}/reject', 'APIOrderController@reject');
     $app->post('orders/{invoiceNo}/approve', 'APIOrderController@approve');

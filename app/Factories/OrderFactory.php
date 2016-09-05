@@ -91,6 +91,7 @@ class OrderFactory extends AbstractFactory
             } else {
                 $total = $cart->quantity * $cart->product->price;
                 $details[] = new OrderDetail([
+                    'invoice_no' => $data['invoice_no'],
                     'code' => $cart->product->code,
                     'name' => $cart->product->name,
                     'price' => $cart->product->price,

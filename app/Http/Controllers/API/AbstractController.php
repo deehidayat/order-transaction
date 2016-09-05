@@ -24,7 +24,7 @@ abstract class AbstractController implements ICrudController
             $record = $this->factory->find($id);
         } catch (\Exception $e) {
             return $this->response([
-                'error' => json_decode($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage() ? json_decode($e->getMessage()) : $e->getMessage()
+                'error' => json_decode($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage()
             ]);    
         }
         return $this->response([

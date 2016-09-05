@@ -20,8 +20,8 @@ class ProductFactory extends AbstractFactory
         $result = app('validator')->make($data, [
             'code' => 'required|unique:products',
             'name' => 'required|unique:products',
-            'price' => 'min:0',
-            'stock' => 'min:0'
+            'price' => 'numeric|min:0',
+            'stock' => 'numeric|min:0'
         ]);
         if (count($result->messages())) {
             throw new \Exception($result->messages());
@@ -33,8 +33,8 @@ class ProductFactory extends AbstractFactory
         $result = app('validator')->make($data, [
             'code' => "unique:products,code,{$id}",
             'name' => "unique:products,name,{$id}",
-            'price' => 'min:0',
-            'stock' => 'min:0'
+            'price' => 'numeric|min:0',
+            'stock' => 'numeric|min:0'
         ]);
         if (count($result->messages())) {
             throw new \Exception($result->messages());

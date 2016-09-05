@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $primaryKey = 'invoice_no';
     /**
      * The attributes that are not mass assignable.
      *
