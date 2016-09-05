@@ -5,9 +5,11 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 
 use App\Models\OrderDetail;
-
 use App\Models\Coupon;
 use App\Models\Cart;
+
+use App\Models\OrderPayment;
+use Illuminate\Support\Facades\Storage;
 
 class OrderFactory extends AbstractFactory
 {
@@ -133,7 +135,7 @@ class OrderFactory extends AbstractFactory
         }
 
         $data['status'] = 'pending_payment';
-        
+
         $order = $this->model->create($data);
         if (!empty($order)) {
             /**
@@ -159,6 +161,46 @@ class OrderFactory extends AbstractFactory
         }
 
         return $record;
+    }
+
+    public function createPayment($data)
+    {
+        $result = app('validator')->make($data, [
+            'invoice_no' => 'required|exists:orders',
+            'payment_date' => 'required|date',
+            'bank_name' => 'required',
+            'account_name' => 'required',
+            'account_number' => 'required',
+            'transfered_by' => 'required',
+            'amount' => 'required|numeric|min:0',
+            'file' => 'image|mimes:png,jpg,jpeg',
+        ]);
+        if (count($result->messages())) {
+            throw new \Exception($result->messages());
+        }
+        $order = $this->model->where('invoice_no', $data['invoice_no'])
+            ->where('status', 'pending_payment')->first();
+        if (empty($order)) {
+            throw new \Exception('Selected Order cannot be proccessed');
+        }
+        /**
+         * Upload File
+         */
+        if (!empty($data['file'])) {
+            $fileUrl = 'payments/'.rand().'-'.$data['file']->getClientOriginalName();
+            Storage::put(
+                $fileUrl,
+                file_get_contents($data['file']->getRealPath())
+            );
+            $data['file_url'] = $fileUrl;
+        }
+        $record = $order->payments()->create($data);
+        if (!empty($record)) {
+            $order->update(['status' => 'paid']);
+            return $record;
+        } else {
+            throw new \Exception('Failed To Create Payment');
+        }
     }
 
 }

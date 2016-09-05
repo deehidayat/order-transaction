@@ -19,4 +19,9 @@ class Order extends Model
     {
         return $this->hasMany('App\Models\OrderDetail', 'invoice_no', 'invoice_no');
     }
+
+    public function payments()
+    {
+        return $this->hasMany('App\Models\OrderPayment', 'invoice_no', 'invoice_no');
+    }
 }

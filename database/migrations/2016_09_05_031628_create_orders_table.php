@@ -42,7 +42,7 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_no');
 
             $table->decimal('total', 20, 4);
-            $table->enum('status', ['pending_payment', 'rejected', 'paid', 'shipped', 'completed']);
+            $table->enum('status', ['pending_payment', 'rejected', 'paid', 'ready_for_shipment', 'shipped', 'completed']);
 
             $table->timestamps();
         });
