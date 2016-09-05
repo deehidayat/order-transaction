@@ -47,6 +47,16 @@ abstract class AbstractFactory implements ICRUDFactory
         return $result;
     }
 
+    public function all()
+    {
+        $records = $this->model->all();
+        if (!empty($records)) {
+            return $records;
+        } else {
+            throw new \Exception('Record Not Found');
+        }
+    }
+
     public function find($id)
     {
         $record = $this->model->find($id);

@@ -32,4 +32,7 @@ $app->group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'api'], func
     $app->post('carts', 'APICartController@store');
     $app->put('carts/{id}', 'APICartController@update');
     $app->delete('carts/{id}', 'APICartController@delete');
+    $app->post('carts/placeorder', 'APICartController@placeOrder');
+
+    $app->get('orders', 'APIOrderController@index');
 });

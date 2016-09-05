@@ -2,6 +2,7 @@
 namespace App\Factories;
 
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartFactory extends AbstractFactory
@@ -19,7 +20,7 @@ class CartFactory extends AbstractFactory
     public function validateCreateRequest(Array $data) {
         $result = app('validator')->make($data, [
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|min:0'
+            'quantity' => 'required|numeric|min:1'
         ]);
         if (count($result->messages())) {
             throw new \Exception($result->messages());
@@ -30,7 +31,7 @@ class CartFactory extends AbstractFactory
     public function validateUpdateRequest(Array $data, $id) {
         $result = app('validator')->make($data, [
             'product_id' => 'exists:products,id',
-            'quantity' => 'min:0'
+            'quantity' => 'numeric|min:1'
         ]);
         if (count($result->messages())) {
             throw new \Exception($result->messages());
@@ -46,6 +47,11 @@ class CartFactory extends AbstractFactory
         $data = $request->input();
 
         $this->validateCreateRequest($data);
+
+        $productExists = Product::where('id', $data['product_id'])->where('stock', '>=', $data['quantity'])->exists();
+        if (!$productExists) {
+            throw new \Exception('Product out of stock');
+        }
 
         $prevProduct = $this->model->where('product_id', $data['product_id'])->first();
 

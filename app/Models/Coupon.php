@@ -16,4 +16,26 @@ class Coupon extends Model
     ];
 
     protected $dates = ['valid_from', 'valid_until'];
+
+    public function calculate($price)
+    {
+        $total = 0;
+        switch ($this->amount_type) {
+            case 'percentage':
+                $total = $price * $this->amount / 100;
+                break;
+            
+            default:
+                $total = $this->amount;
+                break;
+        }    
+        return $total;
+    }
+
+    public function take($quantity = 1)
+    {
+        $this->stock -= $quantity;
+        $this->save();
+        return $this;
+    }
 }
